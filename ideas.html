@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Viral Ideas — BlowViral AI</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  background:#09090f;
+  color:white;
+  min-height:100vh;
+  display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:250px;
+  min-height:100vh;
+  background:#101018;
+  border-right:1px solid #252535;
+  padding:25px 15px;
+}
+
+.logo{
+  font-size:23px;
+  font-weight:bold;
+  padding:10px 15px 35px;
+}
+
+.logo span{
+  color:#8b5cf6;
+}
+
+.menu a{
+  display:block;
+  text-decoration:none;
+  color:#a1a1aa;
+  padding:14px;
+  margin-bottom:7px;
+  border-radius:12px;
+  transition:.3s;
+}
+
+.menu a:hover,
+.menu a.active{
+  background:#211936;
+  color:white;
+}
+
+/* MAIN */
+.main{
+  flex:1;
+  padding:35px;
+  max-width:1400px;
+}
+
+.header{
+  margin-bottom:35px;
+}
+
+.header h1{
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+.header p{
+  color:#888;
+}
+
+/* GENERATOR */
+.generator{
+  background:#12121d;
+  border:1px solid #292938;
+  border-radius:20px;
+  padding:25px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+label{
+  color:#aaa;
+  font-size:14px;
+}
+
+input,select{
+  width:100%;
+  padding:15px;
+  background:#191925;
+  border:1px solid #303040;
+  border-radius:12px;
+  color:white;
+  outline:none;
+  font-size:15px;
+}
+
+input:focus,
+select:focus{
+  border-color:#8b5cf6;
+}
+
+.generate{
+  margin-top:25px;
+  width:100%;
+  padding:17px;
+  border:none;
+  border-radius:13px;
+  background:linear-gradient(90deg,#7c3aed,#2563eb);
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.generate:hover{
+  opacity:.9;
+}
+
+/* RESULTS */
+.results{
+  margin-top:30px;
+  display:none;
+}
+
+.results-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.results-header h2{
+  font-size:22px;
+}
+
+.idea-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+.idea-card{
+  background:#12121d;
+  border:1px solid #292938;
+  padding:20px;
+  border-radius:16px;
+  transition:.3s;
+}
+
+.idea-card:hover{
+  transform:translateY(-4px);
+  border-color:#7c3aed;
+}
+
+.idea-number{
+  color:#8b5cf6;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+
+.idea-title{
+  font-size:17px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.idea-description{
+  color:#999;
+  line-height:1.5;
+  font-size:14px;
+  margin-bottom:15px;
+}
+
+.use-btn{
+  background:#211936;
+  border:1px solid #5939a0;
+  color:#c4b5fd;
+  padding:10px 14px;
+  border-radius:9px;
+  cursor:pointer;
+}
+
+.use-btn:hover{
+  background:#7c3aed;
+  color:white;
+}
+
+/* LOADING */
+.loading{
+  display:none;
+  text-align:center;
+  padding:40px;
+  color:#aaa;
+}
+
+.spinner{
+  width:40px;
+  height:40px;
+  border:4px solid #252535;
+  border-top-color:#8b5cf6;
+  border-radius:50%;
+  margin:0 auto 15px;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+
+/* MOBILE */
+@media(max-width:800px){
+
+  .sidebar{
+    width:65px;
+    padding:15px 6px;
+  }
+
+  .logo{
+    font-size:0;
+    padding:10px;
+  }
+
+  .logo:after{
+    content:"⚡";
+    font-size:25px;
+  }
+
+  .menu a{
+    font-size:0;
+    text-align:center;
+    padding:14px 3px;
+  }
+
+  .menu a:first-letter{
+    font-size:19px;
+  }
+
+  .main{
+    padding:20px;
+  }
+
+  .form-grid,
+  .idea-grid{
+    grid-template-columns:1fr;
+  }
+
+  .header h1{
+    font-size:26px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+  <div class="logo">
+    BLOW<span>VIRAL</span>
+  </div>
+
+  <div class="menu">
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="coach.html">🤖 AI Coach</a>
+    <a class="active" href="ideas.html">💡 Viral Ideas</a>
+    <a href="script.html">✍️ Script Studio</a>
+    <a href="#">🎬 Video Analyzer</a>
+    <a href="#">🔥 Trend Radar</a>
+    <a href="#">🧬 Viral DNA</a>
+    <a href="#">📅 Planner</a>
+  </div>
+
+</div>
+
+
+<div class="main">
+
+  <div class="header">
+    <h1>💡 Viral Ideas Generator</h1>
+    <p>Tell BlowViral AI what you create and discover powerful content ideas.</p>
+  </div>
+
+
+  <div class="generator">
+
+    <div class="form-grid">
+
+      <div class="field">
+        <label>Your niche</label>
+        <input id="niche" placeholder="Example: Anime, Football, Business...">
+      </div>
+
+      <div class="field">
+        <label>Platform</label>
+        <select id="platform">
+          <option>TikTok</option>
+          <option>YouTube Shorts</option>
+          <option>Instagram Reels</option>
+          <option>Facebook Reels</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Content style</label>
+        <select id="style">
+          <option>Storytelling</option>
+          <option>Educational</option>
+          <option>Entertainment</option>
+          <option>Reaction</option>
+          <option>News</option>
+          <option>Motivational</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Your goal</label>
+        <select id="goal">
+          <option>Get more views</option>
+          <option>Gain followers</option>
+          <option>Increase engagement</option>
+          <option>Build a community</option>
+        </select>
+      </div>
+
+    </div>
+
+    <button class="generate" onclick="generateIdeas()">
+      ⚡ Generate Viral Ideas
+    </button>
+
+  </div>
+
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    BlowViral AI is creating viral ideas...
+  </div>
+
+
+  <div class="results" id="results">
+
+    <div class="results-header">
+      <h2>🔥 Your Viral Ideas</h2>
+      <span id="resultInfo" style="color:#8b5cf6;"></span>
+    </div>
+
+    <div class="idea-grid" id="ideaGrid"></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+function generateIdeas(){
+
+  const niche = document.getElementById("niche").value.trim();
+  const platform = document.getElementById("platform").value;
+  const style = document.getElementById("style").value;
+  const goal = document.getElementById("goal").value;
+
+  if(!niche){
+    alert("Please enter your niche first!");
+    return;
+  }
+
+  document.getElementById("results").style.display = "none";
+  document.getElementById("loading").style.display = "block";
+
+  setTimeout(() => {
+
+    const ideas = [
+
+      {
+        title:`The secret nobody tells you about ${niche}`,
+        description:`Create a powerful ${style.toLowerCase()} video that reveals something surprising about ${niche}.`
+      },
+
+      {
+        title:`I tried this in ${niche} for 7 days...`,
+        description:`Use a challenge format and show the unexpected results to increase curiosity.`
+      },
+
+      {
+        title:`Stop doing this if you love ${niche}`,
+        description:`A controversial hook designed to make viewers stop scrolling immediately.`
+      },
+
+      {
+        title:`The biggest mistake beginners make in ${niche}`,
+        description:`Educational content that provides a clear solution and encourages saves and shares.`
+      },
+
+      {
+        title:`What happens when you do this? 😳`,
+        description:`Create curiosity by showing an unusual situation related to ${niche}.`
+      },
+
+      {
+        title:`POV: You discover the truth about ${niche}`,
+        description:`A storytelling concept designed for high retention and emotional reactions.`
+      }
+
+    ];
+
+    const grid = document.getElementById("ideaGrid");
+
+    grid.innerHTML = "";
+
+    ideas.forEach((idea,index) => {
+
+      grid.innerHTML += `
+        <div class="idea-card">
+
+          <div class="idea-number">
+            IDEA ${index + 1} 🔥
+          </div>
+
+          <div class="idea-title">
+            ${idea.title}
+          </div>
+
+          <div class="idea-description">
+            ${idea.description}
+          </div>
+
+          <button class="use-btn"
+            onclick="useIdea('${idea.title.replace(/'/g,"\\'")}')">
+            ✍️ Create Script →
+          </button>
+
+        </div>
+      `;
+
+    });
+
+    document.getElementById("resultInfo").innerText =
+      `${platform} • ${goal}`;
+
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("results").style.display = "block";
+
+  },1200);
+
+}
+
+
+function useIdea(idea){
+
+  localStorage.setItem("blowviralIdea",idea);
+
+  window.location.href = "script.html";
+
+}
+
+</script>
+
+</body>
+</html>
