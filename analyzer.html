@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Video Analyzer — BlowViral AI</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  background:#09090f;
+  color:white;
+  min-height:100vh;
+  display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  width:250px;
+  min-height:100vh;
+  background:#101018;
+  border-right:1px solid #252535;
+  padding:25px 15px;
+}
+
+.logo{
+  font-size:23px;
+  font-weight:bold;
+  padding:10px 15px 35px;
+}
+
+.logo span{
+  color:#8b5cf6;
+}
+
+.menu a{
+  display:block;
+  text-decoration:none;
+  color:#a1a1aa;
+  padding:14px;
+  margin-bottom:7px;
+  border-radius:12px;
+  transition:.3s;
+}
+
+.menu a:hover,
+.menu a.active{
+  background:#211936;
+  color:white;
+}
+
+/* MAIN */
+
+.main{
+  flex:1;
+  padding:35px;
+  max-width:1400px;
+}
+
+.header{
+  margin-bottom:30px;
+}
+
+.header h1{
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+.header p{
+  color:#888;
+  line-height:1.6;
+}
+
+/* UPLOAD */
+
+.upload-box{
+  background:#12121d;
+  border:2px dashed #3a3155;
+  border-radius:20px;
+  padding:50px 25px;
+  text-align:center;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.upload-box:hover{
+  border-color:#8b5cf6;
+  background:#15121f;
+}
+
+.upload-icon{
+  font-size:55px;
+  margin-bottom:15px;
+}
+
+.upload-box h2{
+  margin-bottom:10px;
+}
+
+.upload-box p{
+  color:#888;
+  margin-bottom:20px;
+}
+
+.upload-btn{
+  background:#7c3aed;
+  border:none;
+  color:white;
+  padding:14px 22px;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+#videoInput{
+  display:none;
+}
+
+/* VIDEO PREVIEW */
+
+.preview{
+  display:none;
+  margin-top:25px;
+  background:#12121d;
+  border:1px solid #292938;
+  border-radius:20px;
+  padding:20px;
+}
+
+.preview h2{
+  margin-bottom:18px;
+  font-size:20px;
+}
+
+video{
+  width:100%;
+  max-height:500px;
+  border-radius:15px;
+  background:black;
+}
+
+.video-info{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:15px;
+  color:#888;
+  font-size:14px;
+}
+
+.analyze-btn{
+  width:100%;
+  margin-top:20px;
+  padding:17px;
+  border:none;
+  border-radius:13px;
+  background:linear-gradient(90deg,#7c3aed,#2563eb);
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* LOADING */
+
+.loading{
+  display:none;
+  text-align:center;
+  padding:50px;
+}
+
+.spinner{
+  width:50px;
+  height:50px;
+  border:5px solid #292938;
+  border-top-color:#8b5cf6;
+  border-radius:50%;
+  margin:0 auto 20px;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.loading p{
+  color:#aaa;
+}
+
+/* RESULTS */
+
+.results{
+  display:none;
+  margin-top:30px;
+}
+
+.results-title{
+  margin-bottom:20px;
+}
+
+.results-title h2{
+  font-size:26px;
+}
+
+.score-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+}
+
+.score-card{
+  background:#12121d;
+  border:1px solid #292938;
+  padding:22px;
+  border-radius:18px;
+}
+
+.score-card small{
+  color:#888;
+}
+
+.score{
+  font-size:30px;
+  font-weight:bold;
+  margin-top:12px;
+  color:#a78bfa;
+}
+
+.score-label{
+  color:#4ade80;
+  font-size:13px;
+  margin-top:8px;
+}
+
+/* RECOMMENDATIONS */
+
+.recommendations{
+  margin-top:25px;
+  background:#12121d;
+  border:1px solid #292938;
+  border-radius:20px;
+  padding:25px;
+}
+
+.recommendations h2{
+  margin-bottom:20px;
+}
+
+.recommendation{
+  background:#191925;
+  border-left:3px solid #8b5cf6;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:12px;
+  color:#bbb;
+  line-height:1.6;
+}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+  .sidebar{
+    width:65px;
+    padding:15px 6px;
+  }
+
+  .logo{
+    font-size:0;
+    padding:10px;
+  }
+
+  .logo:after{
+    content:"⚡";
+    font-size:25px;
+  }
+
+  .menu a{
+    font-size:0;
+    text-align:center;
+    padding:14px 3px;
+  }
+
+  .menu a:first-letter{
+    font-size:19px;
+  }
+
+  .main{
+    padding:20px;
+  }
+
+  .header h1{
+    font-size:26px;
+  }
+
+  .score-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+  <div class="logo">
+    BLOW<span>VIRAL</span>
+  </div>
+
+  <div class="menu">
+
+    <a href="dashboard.html">🏠 Dashboard</a>
+
+    <a href="coach.html">🤖 AI Coach</a>
+
+    <a href="ideas.html">💡 Viral Ideas</a>
+
+    <a href="script.html">✍️ Script Studio</a>
+
+    <a class="active" href="analyzer.html">🎬 Video Analyzer</a>
+
+    <a href="#">🔥 Trend Radar</a>
+
+    <a href="#">🧬 Viral DNA</a>
+
+    <a href="#">📅 Planner</a>
+
+  </div>
+
+</div>
+
+
+<div class="main">
+
+  <div class="header">
+
+    <h1>🎬 Video Analyzer</h1>
+
+    <p>
+      Upload your video and get a detailed BlowViral Score
+      with recommendations to improve your content.
+    </p>
+
+  </div>
+
+
+  <!-- UPLOAD -->
+
+  <div class="upload-box" onclick="document.getElementById('videoInput').click()">
+
+    <div class="upload-icon">📤🎬</div>
+
+    <h2>Upload your video</h2>
+
+    <p>
+      Choose a video from your device to analyze.
+    </p>
+
+    <button class="upload-btn">
+      Choose Video
+    </button>
+
+    <input
+      type="file"
+      id="videoInput"
+      accept="video/*"
+      onchange="loadVideo(event)"
+    >
+
+  </div>
+
+
+  <!-- PREVIEW -->
+
+  <div class="preview" id="preview">
+
+    <h2>🎥 Video Preview</h2>
+
+    <video id="videoPreview" controls></video>
+
+    <div class="video-info">
+
+      <span id="fileName">Video</span>
+
+      <span id="videoDuration">Duration: --</span>
+
+      <span id="videoSize">Size: --</span>
+
+    </div>
+
+    <button class="analyze-btn" onclick="analyzeVideo()">
+      ⚡ Analyze Video
+    </button>
+
+  </div>
+
+
+  <!-- LOADING -->
+
+  <div class="loading" id="loading">
+
+    <div class="spinner"></div>
+
+    <h2>🤖 BlowViral AI is analyzing your video...</h2>
+
+    <p id="loadingText">
+      Checking video structure...
+    </p>
+
+  </div>
+
+
+  <!-- RESULTS -->
+
+  <div class="results" id="results">
+
+    <div class="results-title">
+
+      <h2>🔥 BlowViral Analysis</h2>
+
+      <p style="color:#888;margin-top:8px;">
+        Your estimated content performance score.
+      </p>
+
+    </div>
+
+
+    <div class="score-grid">
+
+      <div class="score-card">
+
+        <small>🔥 Viral Score</small>
+
+        <div class="score" id="viralScore">--</div>
+
+        <div class="score-label">
+          Overall potential
+        </div>
+
+      </div>
+
+
+      <div class="score-card">
+
+        <small>⚡ Hook Score</small>
+
+        <div class="score" id="hookScore">--</div>
+
+        <div class="score-label">
+          First seconds impact
+        </div>
+
+      </div>
+
+
+      <div class="score-card">
+
+        <small>⏱ Retention Score</small>
+
+        <div class="score" id="retentionScore">--</div>
+
+        <div class="score-label">
+          Estimated attention
+        </div>
+
+      </div>
+
+
+      <div class="score-card">
+
+        <small>🎯 Engagement Score</small>
+
+        <div class="score" id="engagementScore">--</div>
+
+        <div class="score-label">
+          Interaction potential
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="recommendations">
+
+      <h2>💡 AI Recommendations</h2>
+
+      <div class="recommendation">
+        🔥 <b>Improve your first 2 seconds:</b>
+        Start immediately with the most interesting moment.
+      </div>
+
+      <div class="recommendation">
+        ⚡ <b>Increase retention:</b>
+        Use faster scene changes and visual movement.
+      </div>
+
+      <div class="recommendation">
+        📝 <b>Add captions:</b>
+        Clear subtitles can make your video easier to watch without sound.
+      </div>
+
+      <div class="recommendation">
+        🎯 <b>Use a stronger CTA:</b>
+        Encourage viewers to comment or follow naturally.
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let selectedVideo = null;
+
+
+/* LOAD VIDEO */
+
+function loadVideo(event){
+
+  const file = event.target.files[0];
+
+  if(!file) return;
+
+  selectedVideo = file;
+
+  const video = document.getElementById("videoPreview");
+
+  video.src = URL.createObjectURL(file);
+
+
+  document.getElementById("fileName").innerText =
+    "📁 " + file.name;
+
+
+  const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+
+  document.getElementById("videoSize").innerText =
+    "💾 " + sizeMB + " MB";
+
+
+  document.getElementById("preview").style.display = "block";
+
+
+  video.onloadedmetadata = function(){
+
+    const minutes = Math.floor(video.duration / 60);
+
+    const seconds = Math.floor(video.duration % 60);
+
+    document.getElementById("videoDuration").innerText =
+      "⏱ " + minutes + ":" +
+      seconds.toString().padStart(2,"0");
+
+  };
+
+}
+
+
+/* ANALYZE VIDEO */
+
+function analyzeVideo(){
+
+  if(!selectedVideo){
+
+    alert("Please upload a video first!");
+
+    return;
+
+  }
+
+
+  document.getElementById("results").style.display = "none";
+
+  document.getElementById("loading").style.display = "block";
+
+
+  const loadingTexts = [
+
+    "🎬 Checking video structure...",
+
+    "⚡ Analyzing the hook...",
+
+    "⏱ Estimating viewer retention...",
+
+    "🔥 Calculating viral potential...",
+
+    "🤖 Creating recommendations..."
+
+  ];
+
+
+  let index = 0;
+
+
+  const interval = setInterval(() => {
+
+    document.getElementById("loadingText").innerText =
+      loadingTexts[index];
+
+    index++;
+
+    if(index >= loadingTexts.length){
+
+      clearInterval(interval);
+
+    }
+
+  },700);
+
+
+  setTimeout(() => {
+
+    /*
+      Demo scoring.
+      Later this section will be replaced
+      by real AI video analysis.
+    */
+
+    const viral = Math.floor(Math.random() * 21) + 75;
+
+    const hook = Math.floor(Math.random() * 20) + 75;
+
+    const retention = Math.floor(Math.random() * 25) + 70;
+
+    const engagement = Math.floor(Math.random() * 25) + 70;
+
+
+    document.getElementById("viralScore").innerText =
+      viral + "/100";
+
+    document.getElementById("hookScore").innerText =
+      hook + "/100";
+
+    document.getElementById("retentionScore").innerText =
+      retention + "/100";
+
+    document.getElementById("engagementScore").innerText =
+      engagement + "/100";
+
+
+    document.getElementById("loading").style.display = "none";
+
+    document.getElementById("results").style.display = "block";
+
+
+    window.scrollTo({
+
+      top:document.getElementById("results").offsetTop - 20,
+
+      behavior:"smooth"
+
+    });
+
+  },4000);
+
+}
+
+</script>
+
+</body>
+</html>
