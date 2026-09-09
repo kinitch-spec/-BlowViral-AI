@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Trend Radar — BlowViral AI</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  background:#09090f;
+  color:white;
+  min-height:100vh;
+  display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  width:250px;
+  min-height:100vh;
+  background:#101018;
+  border-right:1px solid #252535;
+  padding:25px 15px;
+}
+
+.logo{
+  font-size:23px;
+  font-weight:bold;
+  padding:10px 15px 35px;
+}
+
+.logo span{
+  color:#8b5cf6;
+}
+
+.menu a{
+  display:block;
+  text-decoration:none;
+  color:#a1a1aa;
+  padding:14px;
+  margin-bottom:7px;
+  border-radius:12px;
+  transition:.3s;
+}
+
+.menu a:hover,
+.menu a.active{
+  background:#211936;
+  color:white;
+}
+
+/* MAIN */
+
+.main{
+  flex:1;
+  padding:35px;
+  max-width:1450px;
+}
+
+.header{
+  margin-bottom:30px;
+}
+
+.header h1{
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+.header p{
+  color:#888;
+}
+
+/* SEARCH */
+
+.search-box{
+  display:flex;
+  gap:12px;
+  background:#12121d;
+  border:1px solid #292938;
+  padding:12px;
+  border-radius:16px;
+  margin-bottom:30px;
+}
+
+.search-box input{
+  flex:1;
+  background:#191925;
+  border:1px solid #303040;
+  border-radius:11px;
+  color:white;
+  padding:14px;
+  outline:none;
+  font-size:15px;
+}
+
+.search-box input:focus{
+  border-color:#8b5cf6;
+}
+
+.search-btn{
+  background:#7c3aed;
+  border:none;
+  color:white;
+  padding:0 22px;
+  border-radius:11px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+/* FILTERS */
+
+.filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:25px;
+}
+
+.filter{
+  background:#151520;
+  border:1px solid #303040;
+  color:#aaa;
+  padding:10px 15px;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+.filter:hover,
+.filter.active{
+  background:#7c3aed;
+  border-color:#7c3aed;
+  color:white;
+}
+
+/* TREND GRID */
+
+.trend-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.trend-card{
+  background:#12121d;
+  border:1px solid #292938;
+  border-radius:18px;
+  padding:22px;
+  transition:.3s;
+}
+
+.trend-card:hover{
+  transform:translateY(-5px);
+  border-color:#7c3aed;
+}
+
+.trend-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.rank{
+  background:#211936;
+  color:#a78bfa;
+  padding:7px 11px;
+  border-radius:9px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.hot{
+  color:#fb7185;
+  font-size:13px;
+}
+
+.trend-title{
+  font-size:19px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.trend-description{
+  color:#888;
+  font-size:14px;
+  line-height:1.6;
+  margin-bottom:18px;
+}
+
+.trend-stats{
+  display:flex;
+  justify-content:space-between;
+  border-top:1px solid #292938;
+  padding-top:15px;
+  color:#aaa;
+  font-size:13px;
+}
+
+.create-btn{
+  width:100%;
+  margin-top:18px;
+  padding:12px;
+  background:#211936;
+  border:1px solid #5939a0;
+  color:#c4b5fd;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.create-btn:hover{
+  background:#7c3aed;
+  color:white;
+}
+
+/* OPPORTUNITY */
+
+.opportunity{
+  margin-bottom:25px;
+  background:linear-gradient(135deg,#241548,#111827);
+  border:1px solid #5939a0;
+  border-radius:18px;
+  padding:22px;
+}
+
+.opportunity h2{
+  margin-bottom:10px;
+}
+
+.opportunity p{
+  color:#aaa;
+  line-height:1.6;
+}
+
+/* MOBILE */
+
+@media(max-width:1000px){
+  .trend-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:800px){
+
+  .sidebar{
+    width:65px;
+    padding:15px 6px;
+  }
+
+  .logo{
+    font-size:0;
+    padding:10px;
+  }
+
+  .logo:after{
+    content:"⚡";
+    font-size:25px;
+  }
+
+  .menu a{
+    font-size:0;
+    text-align:center;
+    padding:14px 3px;
+  }
+
+  .menu a:first-letter{
+    font-size:19px;
+  }
+
+  .main{
+    padding:20px;
+  }
+
+  .header h1{
+    font-size:26px;
+  }
+
+  .trend-grid{
+    grid-template-columns:1fr;
+  }
+
+  .search-box{
+    flex-direction:column;
+  }
+
+  .search-btn{
+    padding:14px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+  <div class="logo">
+    BLOW<span>VIRAL</span>
+  </div>
+
+  <div class="menu">
+
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="coach.html">🤖 AI Coach</a>
+    <a href="ideas.html">💡 Viral Ideas</a>
+    <a href="script.html">✍️ Script Studio</a>
+    <a href="analyzer.html">🎬 Video Analyzer</a>
+    <a class="active" href="trends.html">🔥 Trend Radar</a>
+    <a href="#">🧬 Viral DNA</a>
+    <a href="#">📅 Planner</a>
+
+  </div>
+
+</div>
+
+
+<div class="main">
+
+  <div class="header">
+
+    <h1>🔥 Trend Radar</h1>
+
+    <p>
+      Discover trending content opportunities and turn them into your next viral video.
+    </p>
+
+  </div>
+
+
+  <div class="search-box">
+
+    <input
+      id="trendSearch"
+      placeholder="Search trends in your niche..."
+    >
+
+    <button class="search-btn" onclick="searchTrends()">
+      🔍 Search
+    </button>
+
+  </div>
+
+
+  <div class="filters">
+
+    <button class="filter active" onclick="setFilter(this,'All')">
+      🔥 All
+    </button>
+
+    <button class="filter" onclick="setFilter(this,'TikTok')">
+      TikTok
+    </button>
+
+    <button class="filter" onclick="setFilter(this,'YouTube')">
+      YouTube
+    </button>
+
+    <button class="filter" onclick="setFilter(this,'Instagram')">
+      Instagram
+    </button>
+
+    <button class="filter" onclick="setFilter(this,'Entertainment')">
+      🎬 Entertainment
+    </button>
+
+    <button class="filter" onclick="setFilter(this,'Education')">
+      📚 Education
+    </button>
+
+  </div>
+
+
+  <div class="opportunity">
+
+    <h2>⚡ BlowViral Opportunity</h2>
+
+    <p id="opportunityText">
+      High engagement opportunities are available in short storytelling,
+      reactions and curiosity-based videos.
+    </p>
+
+  </div>
+
+
+  <div class="trend-grid" id="trendGrid">
+
+    <div class="trend-card">
+
+      <div class="trend-top">
+        <span class="rank">#1 TREND</span>
+        <span class="hot">🔥 HOT</span>
+      </div>
+
+      <div class="trend-title">
+        Storytelling Hooks
+      </div>
+
+      <div class="trend-description">
+        Short stories that immediately start with a surprising sentence are gaining strong engagement.
+      </div>
+
+      <div class="trend-stats">
+        <span>📈 Rising</span>
+        <span>⚡ High Potential</span>
+      </div>
+
+      <button class="create-btn"
+        onclick="createFromTrend('Storytelling Hooks')">
+        ✍️ Create Content
+      </button>
+
+    </div>
+
+
+    <div class="trend-card">
+
+      <div class="trend-top">
+        <span class="rank">#2 TREND</span>
+        <span class="hot">🔥 HOT</span>
+      </div>
+
+      <div class="trend-title">
+        Unexpected Facts
+      </div>
+
+      <div class="trend-description">
+        Quick videos revealing surprising facts are designed for curiosity and shares.
+      </div>
+
+      <div class="trend-stats">
+        <span>📈 Growing</span>
+        <span>⚡ Strong</span>
+      </div>
+
+      <button class="create-btn"
+        onclick="createFromTrend('Unexpected Facts')">
+        ✍️ Create Content
+      </button>
+
+    </div>
+
+
+    <div class="trend-card">
+
+      <div class="trend-top">
+        <span class="rank">#3 TREND</span>
+        <span class="hot">🔥 RISING</span>
+      </div>
+
+      <div class="trend-title">
+        POV Videos
+      </div>
+
+      <div class="trend-description">
+        POV storytelling continues to create strong emotional reactions and comments.
+      </div>
+
+      <div class="trend-stats">
+        <span>📈 Rising</span>
+        <span>⚡ Medium</span>
+      </div>
+
+      <button class="create-btn"
+        onclick="createFromTrend('POV Videos')">
+        ✍️ Create Content
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let currentFilter = "All";
+
+
+function setFilter(button,filter){
+
+  currentFilter = filter;
+
+  document.querySelectorAll(".filter").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  document.getElementById("opportunityText").innerText =
+    `Showing ${filter} content opportunities. Find a trend and turn it into an original video idea.`;
+
+}
+
+
+function searchTrends(){
+
+  const search =
+    document.getElementById("trendSearch").value.trim();
+
+  if(!search){
+
+    alert("Enter a niche or topic first!");
+
+    return;
+
+  }
+
+  document.getElementById("opportunityText").innerText =
+    `⚡ Searching content opportunities related to "${search}"...`;
+
+  setTimeout(() => {
+
+    document.getElementById("opportunityText").innerText =
+      `🔥 Opportunity found! Create curiosity-driven, storytelling and reaction content around "${search}".`;
+
+  },1000);
+
+}
+
+
+function createFromTrend(trend){
+
+  localStorage.setItem(
+    "blowviralIdea",
+    `Create a viral video based on the trend: ${trend}`
+  );
+
+  window.location.href = "script.html";
+
+}
+
+</script>
+
+</body>
+</html>
